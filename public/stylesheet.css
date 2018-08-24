@@ -1,0 +1,179 @@
+.nav-link{
+  color: white;
+}
+
+.jumbotron{
+  padding: 1.5%;
+}
+
+
+body{
+  background-image:url("zebra_design_background.PNG");
+}
+
+#currentEvents{
+  height: 100%;
+  width: 100%;
+  padding-right:5%;
+  padding-left:5%;
+  overflow: auto;
+  background-color: white;
+}
+
+#addEvents{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  padding-right: 5%;
+  padding-left: 5%;
+  background-color: white;
+}
+
+#reviewAcceptEvents{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  padding-right: 5%;
+  padding-left: 5%;
+  background-color: white;
+}
+
+
+#about{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  padding-right: 5%;
+  padding-left: 5%;
+  background-color: white;
+}
+
+#adminLogin{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: white;
+}
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  margin: -75px 0 0 -75px;
+  border: 10px solid #969fa3;
+  border-radius: 50%;
+  border-top: 10px solid #333;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#adminLogout{
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: white;
+}
+
+.tab-content{
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+
+#currentEventsHeading{
+  text-align: left;
+}
+
+#reviewEventsHeading{
+  text-align: left;
+}
+
+
+.page-header{
+  border-color: black;
+  align: center;
+  align-self: center;
+}
+
+
+.eventIcon{
+  border-radius:50% 50% 50% 50%;
+  border:#ffffff solid;
+  background-size:cover;
+  width:100px;
+  height:100px;
+  background:url('zebra.png');
+  display: inline-block;
+}
+
+#titleHeader{
+  text-align: center;
+  font-weight: bold;
+
+}
+
+#subTitleText{
+  text-align: center;
+}
+
+.twoFormGroup{
+  display: inline-block;
+}
+
+#inputEmail{
+  margin-bottom: 1.25%;
+}
+
+#inputPassword{
+  margin-bottom: 2.5%;
+}
+
+.navbar-brand
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    margin:0 auto;
+}
+.navbar-toggle {
+    z-index:3;
+}
+
+.navbar.navbar-default {
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.frame {
+    height: 160px; /*can be anything*/
+    width: 160px; /*can be anything*/
+    position: relative;
+}
+img.verticalAligned {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}

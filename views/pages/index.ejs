@@ -1,0 +1,325 @@
+<!-- Document Tag -->
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/bootstrap.css"/>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="icon" type="image/gif" href="favicon.gif"/>
+    <!-- Javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <title>Zebra Events Portal</title>
+
+  </head>
+
+  <body style="height:100%;width:100%;background-size:cover;">
+
+
+    <!-- Main Title Header (Jumbotron) -->
+    <div class="container">
+
+      <div style="text-align:center;" class="jumbotron">
+
+        <h2 style="text-align:center;font-weight:bold;font-size:50px;">Zebra Technologies Events Portal</h2>
+
+      </div>
+
+    </div>
+
+
+    <!-- Tabs for the webportal -->
+    <div class="tabbable">
+
+      <ul class="nav nav-tabs" id="tabPane" role="tablist">
+
+        <li class="nav-item active">
+
+          <a class="nav-link" id="acceptedEventsTab" data-toggle="tab" onclick="viewAcceptedEvents()" href="#acceptedEvents" role="tab" aria-controls="acceptedEvents" aria-selected="true">View Events</a>
+
+        </li>
+
+        <li class="nav-item">
+
+          <a class="nav-link" id="addEventsTab" data-toggle="tab" href="#addEvents" role="tab" aria-controls="addEvents" aria-selected="false">Add Events</a>
+
+        </li>
+
+        <li class="nav-item pull-right">
+
+          <a class="nav-link" id="loginTab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="false">Login</a>
+
+        </li>
+
+      </ul>
+
+    </div>
+
+
+    <div class="tab-content">
+
+
+      <div class="tab-pane fade in active" id="acceptedEvents" role="tabpanel" aria-labelledby="acceptedEventsTab">
+
+        <div class="page-header">
+
+          <h2 id="acceptedEventsHeading">Below is a list of current events happening within Zebra Technologies.</h2>
+
+        </div>
+
+        <div id="allAcceptedEvents">
+
+          <!-- NOTE: This div is left intentionally blank as HTML code is added dynammically to this div -->
+
+        </div>
+
+      </div>
+
+
+      <div class="tab-pane fade" id="addEvents" role="tabpanel" aria-labelledby="addEventsTab">
+
+        <div class="page-header">
+
+          <h2 class="form-heading" id="addEventsHeading">Complete the form below to submit an event.</h2>
+
+        </div>
+
+        <form id="addEventsForm" method="post" enctype="multipart/form-data" action="/uploadEventImage">
+
+          <div class="row">
+
+            <div class="form-group col-md-12">
+
+              <label for="eventNameInput">Event Name:</label>
+              <input type="text" class="form-control" id="eventNameInput" name="eventNameInput" required autofocus/>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="form-group col-md-6">
+
+              <label for="eventOwnerNameInput">Event Owner:</label>
+              <input type="text" class="form-control" id="eventOwnerNameInput" name="eventOwnerNameInput" required/>
+
+            </div>
+
+            <div class="form-group col-md-6">
+
+              <label for="eventOwnerEmailInput">Event Owner Email:</label>
+              <input type="email" class="form-control" id="eventOwnerEmailInput" name="eventOwnerEmailInput" required/>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="form-group col-md-6">
+
+              <label for="eventLocationInput">Event Location:</label>
+              <input type="text" class="form-control" id="eventLocationInput" name="eventLocationInput" required/>
+
+            </div>
+
+            <div class="form-group col-md-6">
+
+              <label for="maxRegistrantsInput">Maximum Registrants:</label>
+              <input type="number" class="form-control" id="maxRegistrantsInput" name="maxRegistrantsInput" required/>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="form-group col-md-6">
+
+              <label for="startTimeInput">Starting Time:</label>
+              <input type="datetime-local" class="form-control" id="startTimeInput" name="startTimeInput" required/>
+
+            </div>
+
+
+            <div class="form-group col-md-6">
+
+              <label for="endTimeInput">Ending Time:</label>
+              <input type="datetime-local" class="form-control" id="endTimeInput" name="endTimeInput" required/>
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="form-group col-md-12" style="text-align:left;">
+
+              <label for="descriptionInput">Event Description:</label>
+              <textarea style="resize:none;" class="form-control" id="descriptionInput" name="descriptionInput" maxlength="255" required/>
+
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+
+            <div class="col-sm-12">
+
+              <label id="pictureInputLabel" style="padding:4px; cursor:hand; border:1px solid #333;" for="pictureInput" class="custom-file-upload">
+                <i class="fa fa-cloud-upload"/>
+                Select Images
+              </label>
+
+              <label id="fileSelectedLabel"></label>
+              <input type="file" class="file_element" style="visibility:hidden;" accept="image/*" id="pictureInput" name="pictureInput"/>
+
+            </div>
+
+          </div>
+
+          <div style="text-align:center;">
+
+            <input style="font-size:25px;" id="addEventToPendingButton" type="submit" onclick="addEventToPending" class="btn btn-primary"/>
+
+          </div>
+
+          <span id="status" style="visibility:hidden;"></span>
+
+        </form>
+
+      </div>
+
+
+      <div class="tab-pane fade" id="login" role="tabpanel" aria-labelledby="loginTab">
+
+        <div class="container" style="width:60%; margin:0 auto; text-align:center;">
+
+          <form class="form-signin" id="loginForm" style="width:60%; margin:0 auto; text-align:center;" action="/auth" method="POST" value="form">
+
+            <div class="page-header">
+
+              <h2 class="form-signin-heading" id="loginHeading">Please login to access administrative functions.</h2>
+
+            </div>
+
+            <label for="inputLoginEmail" class="sr-only">Login Email:</label>
+            <input type="email" id="inputLoginEmail" name="inputLoginEmail" class="form-control" required autofocus/>
+
+            <label for="inputPassword" class="sr-only">Password:</label>
+            <input type="password" id="inputPassword" name="inputPassword" class="form-control" required>
+
+            <button style="margin:0 auto; width:50%;" class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
+  <script>
+
+    function declineEvent(eventID) {
+
+      console.log("Declined event with ID of: " + eventID);
+      $.ajax({
+
+        type: "POST",
+        url: "/declineEvent",
+        data: {
+          "eventID": eventID
+        },
+        cache: false,
+        success: function(response){
+
+          alert("Successfully declined event with ID of: " + eventID);
+          $("#eventID" + eventID).remove();
+
+        }
+
+      });
+
+    }
+
+
+    function acceptEvent(eventID) {
+
+      console.log("Accepted event with ID of: " + eventID);
+      $.ajax({
+
+        type: "POST",
+        url: "/acceptEvent",
+        data: {
+          "eventID": eventID
+        },
+        cache: false,
+        success: function(response) {
+
+          alert("Successfully accepted event with ID of: " + eventID);
+          $("#eventID" + eventID).remove();
+
+        }
+
+      });
+
+    }
+
+
+    function addEvent(){
+
+
+    }
+
+
+    function viewAcceptedEvents(){
+
+      $.ajax({
+
+        type: "POST",
+        url: "/viewAcceptedEvents",
+        cache: false,
+        success: function(response) {
+          document.getElementById("allAcceptedEvents").innerHTML = response[0];
+        }
+
+      });
+
+    }
+
+
+    window.onload = function(){
+
+      $.ajax({
+
+        type: "POST",
+        url: "/viewAcceptedEvents",
+        cache: false,
+        success: function(response) {
+          document.getElementById("allAcceptedEvents").innerHTML = response[0];
+        }
+
+      });
+
+    }
+
+
+  </script>
+
+
+
+</html>
