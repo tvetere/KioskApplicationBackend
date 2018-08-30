@@ -19,7 +19,7 @@
 
   </head>
 
-  <body style="height:100%;width:100%;background-size:cover;">
+  <body style="height:100%;width:100%;background-size:cover;background-image:url('zebra_design_background.PNG');">
 
     <div class="container">
 
@@ -245,6 +245,23 @@
 
   <script>
 
+
+    // NOTE might be bug here
+
+    jQuery("input#pictureInput").change(function() {
+
+      var pictureInputElement = document.getElementById('pictureInput');
+      var selectedFile = "";
+      if(pictureInputElement.files == null){
+        $("label#fileSelectedLabel").replaceWith("<label id='fileSelectedLabel'></label>")
+      }
+      else{
+        selectedFile = pictureInputElement.files.item(0).name;
+        $("label#fileSelectedLabel").replaceWith("<label id='fileSelectedLabel'>Current File Selected: " + selectedFile + "</label>")
+      }
+
+    });
+
     function logout(){
 
       $.ajax({
@@ -264,7 +281,72 @@
 
     function addEvent(){
 
+      document.getElementById("addEventToPendingButton").disabled = true;
 
+      var eventOwnerName = document.getElementById("eventOwnerNameInput").value;
+      var eventOwnerEmail = document.getElementById("eventOwnerEmailInput").value;
+      var eventName = document.getElementById("eventNameInput").value;
+      var eventLocation = document.getElementById("eventLocationInput").value;
+      var startTime = document.getElementById("startTimeInput").value;
+      var endTime = document.getElementById("endTimeInput").value;
+      var description = document.getElementById("descriptionInput").value;
+      var maxRegistrants = document.getElementById("maxRegistrantsInput").value;
+      var picture = document.getElementById("pictureInput").value;
+
+      if(eventOwnerName != "" && eventOwnerEmail != "" && eventName != "" && eventLocation != "" &&
+        startTime != "" && endTime != "" && description != "" && maxRegistrants != "" && picture != "") {
+
+        $.ajax({
+
+          type: "POST",
+          url: "/addEventToPending",
+          data: {
+            "ownerName": eventOwnerName,
+            "ownerEmail": eventOwnerEmail,
+            "eventName": eventName,
+            "location": eventLocation,
+            "startTime": startTime,
+            "endTime": endTime,
+            "description": description,
+            "maxRegistrants": maxRegistrants,
+            "image": picture,
+            "isApproved": false
+          },
+          cache: false,
+          success: function(response){
+
+            if(response){
+
+              alert("Your event has been submitted for approval. You will recieve an email when the administrator accepts or declines the event.");
+
+              document.getElementById("eventOwnerNameInput").value = "";
+              document.getElementById("eventOwnerEmailInput").value = "";
+              document.getElementById("eventNameInput").value = "";
+              document.getElementById("eventLocationInput").value = "";
+              document.getElementById("startTimeInput").value = "";
+              document.getElementById("endTimeInput").value = "";
+              document.getElementById("descriptionInput").value = "";
+              document.getElementById("maxRegistrantsInput").value = "";
+              document.getElementById("pictureInput").value = "";
+
+            }
+
+            else{
+              alert("Error adding event. Please review the submission form.");
+            }
+
+
+          }
+
+
+        });
+
+
+      }
+
+      document.getElementById("addEventToPendingButton").disabled = false;
+
+      return false;
 
     }
 
