@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now());
     }
 });
-var upload = multer({storage:storage}).array('eventPicturesInput', 1);
+var upload = multer({storage:storage}).array('pictureInput', 1);
 var transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
@@ -78,7 +78,7 @@ function handleDisconnect(){
 
 handleDisconnect();
 
-var server = app.listen(3005, "10.61.204.110", function() {
+var server = app.listen(3005, "10.61.204.102", function() {
 
   var host = server.address().address;
   var port = server.address().port;
@@ -93,11 +93,11 @@ app.get('/', function(req, res) {
   sesh = req.session;
 
   if(sesh.logged_in == true){
-    res.render('pages/logged_in');
+    res.render('logged_in');
   }
 
   else{
-    res.render('pages/index');
+    res.render('index');
   }
 
 });
@@ -117,7 +117,13 @@ app.post('/logout', function(req, res) {
 //TODO THIS IS THE METHOD TO LOGIN FOR ADMINISTRATOR NEED TO FIGURE OUT WHAT WE ARE DOING WITH LOGIN TODO
 app.post('/auth', function(req, res) {
 
-
+  sesh = req.session;
+  var username = req.body.inputEmail;
+  var password = req.body.inputPassword;
+  if(username === "Administrator"  && password === "Zebra123"){
+    sesh.logged_in = true;
+  }
+  return res.redirect('/');
 
 });
 
@@ -125,12 +131,46 @@ app.post('/auth', function(req, res) {
 //TODO THIS IS THE METHOD TO DELETE AN EVENT NEED TO FIGURE OUT WHAT TO DO TODO
 app.post('/deleteEvent', function(req, res) {
 
+  var query = "DELETE FROM `accepted_events` WHERE `eventID` = " + req.body.eventID;
+  connection.query(query, function(err, rows){
 
+    if(err){
+      throw(err);
+    }
+
+  });
+
+  var query = "DELETE FROM `people` WHERE `eventID` = " + req.body.eventID;
+  connection.query(query, function(err, rows){
+
+    if(err){
+      throw(err);
+    }
+
+  });
+
+  return res.redirect('/');
 
 });
 
 
 app.post('/declineEvent', function(req, res) {
+
+  var eventID = req.body.eventID;
+  var select = "SELECT * FROM `pendingEvents` WHERE `eventID` = " + eventID;
+  connection.query(select, function(err, rows){
+    sendAcceptDeclineNotificationEmail(rows[0].ownerEmail, rows[0].eventName, "Declined");
+  });
+  var query = "DELETE FROM `pendingEvents` WHERE `eventID` = " + eventID;
+  connection.query(query, function(err, rows){
+
+    if(err){
+      throw(err);
+    }
+
+  });
+
+  res.send("Pending Event Successfully Deleted");
 
 });
 
@@ -147,10 +187,43 @@ app.post('/viewPendingEvents', function(req, res) {
 
 app.post('/acceptEvent', function(req, res) {
 
-});
+  var eventID = req.body.eventID;
+  var select = "SELECT * FROM `pendingEvents` WHERE `eventID` = " + eventID;
+  connection.query(select, function(err, rows){
 
+    if(err){
+      throw(err);
+    }
 
-app.post('/declineEvent', function(req, res) {
+    var insert = "INSERT INTO `acceptedEvents` (`ownerName`, `ownerEmail`, `eventName`, "
+      + "`location`, `description`, `startTime`, `endTime`, `maxRegistrants`, `image`) VALUES (";
+
+    insert += connection.escape(rows[0].ownerName) + "," + connection.escape(rows[0].ownerEmail) + "," + connection.escape(rows[0].eventName)
+      + "," + connection.escape(rows[0].location) + "," + connection.escape(rows[0].description) + "," + connection.escape(rows[0].startTime)
+      + "," + connection.escape(rows[0].endTime) + "," + connection.escape(rows[0].maxRegistrants) + "," + connection.escape(rows[0].image) + ")";
+
+    connection.query(insert, function(err2, rows2) {
+
+      if(err){
+        throw(err);
+      }
+
+      sendAcceptDeclineNotificationEmail(rows[0].ownerEmail, rows[0].eventName, "Accepted");
+      var query = "DELETE FROM `pendingEvents` WHERE `eventID` = " + eventID;
+
+      connection.query(query, function(err3, rows3){
+
+        if(err){
+          throw err;
+        }
+
+      });
+
+    });
+
+  });
+
+  res.send("Pending Event Successfully Accepted");
 
 });
 
@@ -169,6 +242,37 @@ app.post('/uploadEventImage', function(req, res) {
 
 function sendAcceptDeclineNotificationEmail(email, eventName, status){
 
+  var content = "No HTML Here";
+  var html_content = "";
+
+  if(status == "Accepted"){
+    html_content += "Congratulations, your event, " + eventName + ", has been approved!";
+  }
+
+  else{
+    html_content += "Sorry, but your event, " + eventName + ", has been declined after being reviewed by an administrator. If you think this is a mistake, please contact your administrator and submit the event again.";
+  }
+
+  var mailOptions = {
+
+    from: 'Zebra.mail.bot@gmail.com',
+    to: email,
+    subject: 'Zebra Events Portal - Status of your submitted event',
+    text: content,
+    html: html_content
+
+  };
+
+  transporter.sendMail(mailOptions, function(error, info) {
+
+    if(error){
+      console.log(error);
+    }
+    else{
+      console.log("Message sent: " + info.response);
+    }
+
+  });
 
 
 }

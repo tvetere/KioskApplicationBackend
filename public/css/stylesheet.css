@@ -6,12 +6,17 @@
   padding: 1.5%;
 }
 
-
-body{
-  background-image:url("zebra_design_background.PNG");
+html{
+  width:100%;
+  height:100%;
 }
 
-#currentEvents{
+body{
+  width: 100%;
+  height: 100%;
+}
+
+#acceptedEvents{
   height: 100%;
   width: 100%;
   padding-right:5%;
@@ -39,16 +44,8 @@ body{
 }
 
 
-#about{
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  padding-right: 5%;
-  padding-left: 5%;
-  background-color: white;
-}
 
-#adminLogin{
+#login{
   height: 100%;
   width: 100%;
   overflow: auto;
@@ -94,7 +91,7 @@ body{
 }
 
 
-#currentEventsHeading{
+#acceptedEventsHeading{
   text-align: left;
 }
 
