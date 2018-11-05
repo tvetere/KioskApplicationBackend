@@ -244,8 +244,8 @@
       var imageInput = document.getElementById('pictureInput');
       var selectedFile = imageInput.files.item(0).name;
       console.log(selectedFile);
-      if(selectedFiles != ""){
-        $("label#fileSelectedLabel").replaceWith( "<label id='fileSelectedLabel'>Current File Selected : " + selectedFiles + "</label>" );
+      if(selectedFile != ""){
+        $("label#fileSelectedLabel").replaceWith( "<label id='fileSelectedLabel'>Current File Selected : " + selectedFile + "</label>" );
       }
       else{
         $("label#fileSelectedLabel").replaceWith("<label id='fileSelectedLabel'></label>");

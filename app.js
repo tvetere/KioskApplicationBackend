@@ -13,7 +13,7 @@ var app = express();
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
-app.use(session({secret:'Kiosk'}));
+app.use(session({secret:'Kiosk', resave:false, saveUninitialized:false}));
 app.set('view engine', 'ejs');
 const IMAGE_FOLDER = './images/'
 var StatusEnum = Object.freeze({"open":1, "closed": 2});
